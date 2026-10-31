@@ -109,7 +109,7 @@ Untuk menjaga kesederhanaan operasional di kantor desa tanpa perlu berganti-gant
 | No | Role Pengguna | Siapa yang Menggunakan | Hak Akses & Kewenangan |
 |:---:|---|---|---|
 | 1 | **Operator Desa** | Sekdes / Operator Desa / Staf Pelayanan | **Akses Penuh Operasional**: Mengelola Master Data Penduduk, Modul 1 (Pembangunan), Modul 2 (APBDes), Modul 3 (Persuratan), Modul 4 (Bansos & Dokumentasi Kegiatan), serta Pengaturan Profil Desa, SOTK, Upload Dokumen PPID & Backup Data. |
-| 2 | **Kepala Desa** | Kepala Desa (dan BPD saat evaluasi) | **Dashboard Eksekutif (*Read-Only* & Cetak PDF)**: Memantau grafik serapan APBDes, progres fisik vs keuangan proyek beserta foto $0\%, 50\%, 100\%$, rekap surat keluar/masuk, dan data bansos langsung dari HP serta mencetak laporan tanpa risiko tidak sengaja mengubah/menghapus data. |
+| 2 | **Kepala Desa** | Kepala Desa (dan BPD saat evaluasi) | **Dashboard Eksekutif (*Read-Only* & Cetak PDF)**: Memantau grafik serapan APBDes, progres fisik vs keuangan proyek beserta foto 0%, 50%, 100%, rekap surat keluar/masuk, dan data bansos langsung dari HP serta mencetak laporan tanpa risiko tidak sengaja mengubah/menghapus data. |
 | 3 | **Pengunjung Publik** | Warga, Kecamatan, Pemkab, Kemendesa, Kemendagri, BPKP | **Tanpa Login**: Mengakses Halaman Publik Desa, melihat transparansi anggaran & proyek (beserta arsip lintas tahun), mengecek status bansos mandiri (tersensor), mengajukan permohonan surat dari rumah, dan mengunduh dokumen resmi desa. |
 
 ### B. Fondasi Master Data Kependudukan (Data Warga & Kartu Keluarga)
@@ -118,9 +118,10 @@ Berfungsi sebagai **sumber data tunggal (*Single Source of Truth*)** yang menyup
    - Operator dapat mengimpor data penduduk dan Kartu Keluarga (KK) secara massal menggunakan template Excel (kompatibel dengan struktur kolom SIAK/Prodeskel) sehingga tidak perlu mengetik ribuan warga satu per satu saat sistem pertama kali digunakan.
 2. **Data yang Dicatat**:
    - Nomor KK, NIK, Nama Lengkap, Tempat & Tanggal Lahir, Jenis Kelamin, Agama, Pendidikan, Pekerjaan, Status Perkawinan, Hubungan dalam Keluarga (Kepala Keluarga/Istri/Anak), Alamat Dusun/RT/RW, Status Kesejahteraan/DTKS, dan **Status Kependudukan** (*Aktif / Meninggal Dunia / Pindah Keluar*).
-3. **Mutasi Otomatis Terintegrasi dengan Modul 3**:
-   - Saat Operator menerbitkan **Surat Keterangan Kematian** di Modul 3, sistem otomatis mengubah status warga yang bersangkutan menjadi **Meninggal Dunia** di Master Penduduk. NIK yang berstatus meninggal otomatis terkunci agar tidak bisa disalahgunakan untuk pencetakan surat baru maupun penerimaan Bansos.
-   - Saat menerbitkan **Surat Keterangan Kelahiran**, operator dapat langsung menambahkan data bayi ke dalam KK orang tuanya.
+3. **Mutasi Kependudukan Terintegrasi (Lahir, Mati, Pindah Keluar & Pendatang Baru)**:
+   - **Kematian (Otomatis dari Modul 3)**: Saat Operator menerbitkan **Surat Keterangan Kematian** di Modul 3, sistem otomatis mengubah status warga yang bersangkutan menjadi **Meninggal Dunia** di Master Penduduk. NIK yang berstatus meninggal otomatis terkunci agar tidak bisa disalahgunakan untuk pencetakan surat baru maupun penerimaan Bansos.
+   - **Kelahiran (Otomatis dari Modul 3)**: Saat menerbitkan **Surat Keterangan Kelahiran**, Operator dapat langsung menambahkan data bayi ke dalam KK orang tuanya.
+   - **Pindah Keluar & Pendatang Baru**: Saat ada warga yang pindah domisili ke luar desa, Operator memperbarui status kependudukannya menjadi **Pindah Keluar** di Master Penduduk (otomatis menonaktifkan status kepesertaan Bansos warga tersebut agar tidak ganda, tanpa menghapus riwayat arsip suratnya). Sebaliknya, warga pendatang baru dapat langsung ditambahkan ke KK yang ada atau KK baru.
 
 ```mermaid
 flowchart TD
@@ -164,9 +165,9 @@ flowchart TD
 
 ### B. Alur Penggunaan oleh Operator:
 1. **Input Kegiatan Baru**: Saat kegiatan disahkan di APBDes atau akan dimulai, Operator mengklik tombol **"Tambah Pembangunan"**.
-2. **Update Progres Fisik & Keuangan Berkala**: Operator mengupdate persentase pengerjaan fisik ($0\% - 100\%$), menginput **Realisasi Anggaran / Dana Terserap (Rp)**, mencatat kendala lapangan (jika ada), dan mengunggah foto perkembangan lapangan.
-3. **Sinkronisasi Otomatis ke APBDes (Modul 2)**: Setiap pembaruan Pagu dan Realisasi Anggaran di Modul 1 otomatis memperbarui angka serapan *Bidang 2: Pelaksanaan Pembangunan Desa* pada Modul 2 sesuai Tahun Anggaran proyek.
-4. **Penyelesaian**: Status otomatis berubah menjadi **Selesai** saat progres fisik mencapai $100\%$ dan foto hasil akhir diunggah.
+2. **Update Progres Fisik & Keuangan Berkala**: Operator mengupdate persentase pengerjaan fisik (0% – 100%), menginput **Realisasi Anggaran / Dana Terserap (Rp)**, mencatat kendala lapangan (jika ada), dan mengunggah foto perkembangan lapangan.
+3. **Sinkronisasi Otomatis ke APBDes (Modul 2)**: Setiap pembaruan Pagu dan Realisasi Anggaran di Modul 1 otomatis memperbarui angka serapan **Komponen Proyek Fisik** pada *Bidang 2: Pelaksanaan Pembangunan Desa* di Modul 2 sesuai Tahun Anggaran proyek.
+4. **Penyelesaian**: Status otomatis berubah menjadi **Selesai** saat progres fisik mencapai 100% dan foto hasil akhir diunggah.
 5. **Pelaporan**: Operator atau Kepala Desa klik tombol **"Cetak Rekapitulasi (PDF)"** untuk langsung diprint ke kertas F4 sebagai bahan laporan ke BPD, Kecamatan, atau Inspektorat.
 
 ### C. Formulir Isian Data Proyek:
@@ -175,7 +176,7 @@ flowchart TD
 | 1 | **Nama Kegiatan** | Contoh: *Pembangunan Rabat Beton Jalan Usaha Tani* | Ya |
 | 2 | **Lokasi / Dusun** | Contoh: *Dusun Sukamaju, RT 02 / RW 01* | Ya |
 | 3 | **Pagu Anggaran (Rp)** | Nilai dana proyek (Contoh: *Rp 55.000.000*) | Ya |
-| 4 | **Realisasi Anggaran / Dana Terserap (Rp)** | Nominal dana yang sudah cair/terserap (Otomatis sinkron ke Bidang 2 Modul 2) | Ya |
+| 4 | **Realisasi Anggaran / Dana Terserap (Rp)** | Nominal dana yang sudah cair/terserap (Otomatis sinkron ke Komponen Fisik Bidang 2 Modul 2) | Ya |
 | 5 | **Sumber Dana** | Dropdown: *Dana Desa (DDS)*, *ADD*, *Bantuan Keuangan*, atau *PADes* | Ya |
 | 6 | **Tahun Anggaran** | Contoh: *2026* (Mendukung filter arsip lintas tahun) | Ya |
 | 7 | **Volume / Ukuran Fisik** | Contoh: *Panjang 350 m x Lebar 2,5 m* | Opsional |
@@ -185,9 +186,9 @@ flowchart TD
 | 11 | **Catatan / Kendala Lapangan** | Contoh: *Tertunda 3 hari karena curah hujan tinggi* | Opsional |
 
 ### D. Fitur Update Progres & Dokumentasi:
-- **Status Otomatis**: Progres $0\%$ = *Belum Dimulai*, $1-99\%$ = *Sedang Dikerjakan*, $100\%$ = *Selesai*.
+- **Status Otomatis**: Progres 0% = *Belum Dimulai*, 1–99% = *Sedang Dikerjakan*, 100% = *Selesai*.
 - **Indikator Perbandingan Fisik vs Keuangan**: Menampilkan persentase progres fisik berdampingan dengan persentase serapan dana ($\frac{\text{Realisasi}}{\text{Pagu}} \times 100\%$).
-- **Wajib 3 Titik Foto**: Foto Titik Nol ($0\%$), Foto Sedang Berjalan ($50\%$), dan Foto Hasil Akhir ($100\%$).
+- **Wajib 3 Titik Foto**: Foto Titik Nol (0%), Foto Sedang Berjalan (50%), dan Foto Hasil Akhir (100%).
 - **Output Cetak**: Tabel rekapitulasi resmi siap cetak format F4 lengkap dengan kolom tanda tangan Kepala Desa & Pelaksana Kegiatan.
 
 ---
@@ -204,20 +205,25 @@ flowchart TD
 - Pembuatan baliho APBDes manual di percetakan yang memakan waktu dan biaya.
 
 ### B. Alur Penggunaan oleh Kantor Desa:
-1. **Awal Tahun**: Operator memilih **Tahun Anggaran** dan menginputkan target **Pendapatan**, **Pembiayaan/SiLPA**, serta pagu **Belanja** berdasarkan Perdes APBDes tahun berjalan (cukup diinput 1 kali di awal tahun, atau diperbarui saat ada APBDes Perubahan). Data tahun-tahun sebelumnya tetap tersimpan rapi sebagai arsip.
+1. **Awal Tahun & Perubahan Anggaran**: Operator memilih **Tahun Anggaran** serta status dokumen (**APBDes Awal / Murni** atau **APBDes Perubahan / P-APBDes**), lalu menginputkan target **Pendapatan**, **Pembiayaan (Penerimaan SiLPA & Pengeluaran Pembiayaan)**, serta pagu **Belanja** berdasarkan Perdes APBDes tahun berjalan. Data tahun-tahun sebelumnya tetap tersimpan rapi sebagai arsip.
 2. **Sepanjang Tahun**:
-   - Untuk **Bidang 2 (Pembangunan Desa)**: Angka realisasi belanja dapat ditarik/tersinkronisasi otomatis dari total `Realisasi Anggaran (Rp)` seluruh proyek fisik tahun berjalan di **Modul 1**.
+   - Untuk **Bidang 2 (Pelaksanaan Pembangunan Desa)**: Terbagi menjadi dua komponen agar 100% akurat sesuai Siskeudes/Perdes APBDes, yaitu **Komponen Proyek Fisik** (Pagu & Realisasi otomatis ditarik dari seluruh proyek fisik tahun berjalan di **Modul 1**) dan **Komponen Non-Fisik Pembangunan** (input manual untuk sub-bidang non-fisik seperti *Posyandu, Penanganan Stunting, Kesehatan, dan Insentif PAUD Desa*).
    - Untuk **Bidang 1, 3, 4, dan 5**: Setiap ada realisasi belanja kegiatan per termin (Tahap I, II, III), Operator mencatat nominal yang terserap.
-3. **Kapan Saja**: Kepala Desa atau Operator bisa melihat grafik persentase serapan, pos anggaran yang masih utuh, membandingkan antar-tahun anggaran, serta mencetak laporan rekapitulasi.
+3. **Kapan Saja**: Kepala Desa atau Operator bisa melihat grafik persentase serapan, pos anggaran yang masih utuh, membandingkan antar-tahun anggaran (maupun Murni vs Perubahan), serta mencetak laporan rekapitulasi.
 
 ### C. Pos Data yang Dicatat:
-- **Pendapatan Desa**: Dana Desa (DDS), Alokasi Dana Desa (ADD), PADes, Bagi Hasil Pajak & Retribusi Daerah (BHPRD), Bantuan Keuangan Provinsi/Kabupaten, Pendapatan Lain-lain, serta Pembiayaan (SiLPA).
+- **Status Dokumen Anggaran**: Pilihan **APBDes Awal (Murni)** dan **APBDes Perubahan (P-APBDes)** pada tahun berjalan.
+- **Pendapatan Desa**: Dana Desa (DDS), Alokasi Dana Desa (ADD), PADes, Bagi Hasil Pajak & Retribusi Daerah (BHPRD), Bantuan Keuangan Provinsi/Kabupaten, dan Pendapatan Lain-lain yang Sah.
 - **Belanja Desa (5 Bidang Baku Permendagri No. 20/2018)**:
   1. *Bidang 1: Penyelenggaraan Pemerintahan Desa* (Siltap Kades/Perangkat, operasional BPD, RT/RW & kantor).
-  2. *Bidang 2: Pelaksanaan Pembangunan Desa* (Infrastruktur fisik — *otomatis sinkron dengan Pagu & Realisasi di Modul 1*).
+  2. *Bidang 2: Pelaksanaan Pembangunan Desa* (Gabungan **Komponen Fisik** yang otomatis sinkron dari Modul 1 + **Komponen Non-Fisik Pembangunan** seperti Posyandu, Kesehatan/Stunting & PAUD).
   3. *Bidang 3: Pembinaan Kemasyarakatan Desa* (Karang Taruna, PKK, keagamaan, kamling).
-  4. *Bidang 4: Pemberdayaan Masyarakat Desa* (Pelatihan tani, bantuan bibit/modal BUMDes).
+  4. *Bidang 4: Pemberdayaan Masyarakat Desa* (Pelatihan tani, ketahanan pangan, peningkatan kapasitas).
   5. *Bidang 5: Penanggulangan Bencana, Keadaan Darurat & Mendesak* (BLT Dana Desa & darurat bencana).
+- **Pembiayaan Desa & Rumus Keseimbangan Anggaran**:
+  - *Penerimaan Pembiayaan*: Sisa Lebih Perhitungan Anggaran (**SiLPA**) tahun sebelumnya.
+  - *Pengeluaran Pembiayaan*: **Penyertaan Modal Desa (BUMDes)** atau pembentukan dana cadangan.
+  - *Rumus Keseimbangan Otomatis*: $\text{Total Pagu Belanja} = \text{Total Pendapatan} + \text{Penerimaan Pembiayaan (SiLPA)} - \text{Pengeluaran Pembiayaan}$.
 
 ### D. Output yang Dihasilkan:
 - **Dashboard Grafik Visual**: Diagram donat/batang serapan kas per bidang (Pagu vs Realisasi vs Sisa Anggaran) dilengkapi filter pemilih Tahun Anggaran.
@@ -263,7 +269,9 @@ flowchart TD
   - Format nomor surat otomatis mengikuti pola `[Kode Klasifikasi] / [Nomor Urut Otomatis] / [Kode Desa] / [Bulan Romawi] / [Tahun]` (Contoh: `470 / 024 / DS-SKM / X / 2026`).
   - **Reset Otomatis Tahun Baru**: Nomor urut surat otomatis kembali ke `001` setiap pergantian tahun (1 Januari), sementara arsip surat tahun-tahun sebelumnya tetap tersimpan utuh.
 - **Format Cetak PDF Presisi Kertas F4**: Lengkap dengan Kop Surat Resmi Desa & **QR Code Arsip**.
-- **Verifikasi Keaslian via QR Code**: Saat QR Code di surat dipindai menggunakan kamera HP, browser akan membuka halaman verifikasi resmi website desa yang menampilkan status **"SURAT ASLI & TERDAFTAR DI BUKU AGENDA DESA"** beserta Nomor Surat, Jenis Surat, Tanggal Terbit, Nama Warga (disamarkan sebagian, misal: *Budi S\*\*\*\**), dan Pejabat Penandatangan.
+- **Verifikasi Keaslian via QR Code Berbasis Token Acak (UUID/Hash)**:
+  - Tautan pada QR Code menggunakan **Token Acak Unik (UUID/Hash)** — bukan nomor urut biasa — agar data arsip surat warga aman dan tidak bisa ditebak sembarangan oleh pihak luar (*anti-enumeration*).
+  - Saat QR Code di surat dipindai menggunakan kamera HP, browser akan membuka halaman verifikasi resmi website desa yang menampilkan status **"SURAT ASLI & TERDAFTAR DI BUKU AGENDA DESA"** beserta Nomor Surat, Jenis Surat, Tanggal Terbit, Nama Warga (disamarkan sebagian, misal: *Budi S\*\*\*\**), dan Pejabat Penandatangan.
 - **Buku Agenda Surat Keluar Digital**: Dilengkapi pencarian instan, filter per bulan/tahun, tombol cetak ulang surat, dan cetak buku agenda F4.
 - **Buku Agenda Surat Masuk & Arsip Scan**: Tab khusus untuk mencatat surat yang masuk ke kantor desa (dari Kecamatan, Kabupaten, Undangan, dll.) meliputi *Nomor Surat Masuk, Tanggal Terima, Pengirim, Perihal, Tujuan/Disposisi*, serta fitur **Upload Foto/Scan PDF Surat Masuk** agar arsip fisik tidak hilang.
 
@@ -283,12 +291,13 @@ flowchart TD
 - **Atribut Data Bansos Lengkap**:
   - Terhubung langsung ke NIK & Nomor KK di **Master Data Penduduk**.
   - **Jenis Bantuan**: PKH, BPNT/Sembako, BLT Dana Desa (BLT-DD), Bantuan RTLH (Bedah Rumah), PBI-JKN (KIS), atau Bantuan Daerah.
+  - **Nominal / Bentuk Bantuan**: Nilai uang tunai atau jenis barang per tahap (contoh: *Rp 300.000 / Bulan* untuk BLT-DD, atau *Paket Sembako / Beras 10 Kg*).
   - **Periode Penyaluran**: **Tahun Anggaran** (misal: *2026*) dan **Tahap / Bulan** (misal: *Tahap I / Triwulan 1*).
   - **Kategori Ekonomi / Desil**: *Terdaftar DTKS*, *Miskin Ekstrem (P3KE)*, *Rentan Miskin*, atau *Non-DTKS*.
   - **Status Kepesertaan**: *Aktif*, *Graduasi (Sudah Mampu)*, *Pindah*, atau *Meninggal Dunia* (otomatis nonaktif jika diterbitkan Surat Kematian di Modul 3).
 - **Pengecekan Instan di Loket**: Saat warga datang ke loket (atau mengajukan SKTM di Modul 3), sistem langsung menampilkan riwayat bantuan sosial yang diterima warga tersebut beserta anggota keluarganya (1 KK).
 - **Filter Pemerataan Bantuan**: Tombol khusus untuk memfilter daftar warga kategori kurang mampu (*DTKS / Miskin Ekstrem*) yang **belum pernah menerima bantuan apapun** pada tahun berjalan agar pembagian bantuan desa tepat sasaran dan adil.
-- **Cetak Daftar Hadir & Tanda Terima Penyaluran Bansos (PDF Kertas F4)**: Fitur cetak tabel daftar penerima bantuan per Tahap/Jenis Bansos lengkap dengan kolom **Tanda Tangan / Cap Jempol Warga** dan pengesahan Kepala Desa sebagai bukti fisik lampiran LPJ penyaluran bantuan di balai desa.
+- **Cetak Daftar Hadir & Tanda Terima Penyaluran Bansos (PDF Kertas F4)**: Fitur cetak tabel daftar penerima bantuan per Tahap/Jenis Bansos lengkap dengan rincian **Nominal/Bentuk Bantuan**, kolom **Tanda Tangan / Cap Jempol Warga**, dan pengesahan Kepala Desa sebagai bukti fisik lampiran LPJ penyaluran bantuan di balai desa.
 
 #### 2. Manajemen Dokumentasi Kegiatan Desa (Untuk Halaman Publik) ⭐:
 Operator desa mempublikasikan dokumentasi kegiatan kemasyarakatan dan kedinasan agar tayang di website resmi desa:
@@ -340,8 +349,8 @@ flowchart TD
    - Warga memasukkan **16 digit NIK** dan **Tanggal Lahir** (sebagai pengaman verifikasi) pada kolom pencarian.
    - Sistem hanya menampilkan hasil yang sudah disamarkan demi privasi, contoh: *"Nama: B\*\*\* S\*\*\*\*\* | Dusun Sukamaju | Terdaftar sebagai Penerima BLT Dana Desa Tahun 2026 (Status: Aktif)"* tanpa membocorkan detail anggota keluarga atau data sensitif lainnya.
 2. **Pengajuan Surat Online dari Rumah (Terintegrasi Antrean Modul 3 & WA)**:
-   - Warga memilih jenis surat yang dibutuhkan, memasukkan **NIK + Tanggal Lahir** (sistem memvalidasi kecocokannya dengan Master Penduduk agar tidak bisa diisi sembarangan oleh orang lain), memasukkan **Nomor HP/WA aktif**, serta mengisi keperluan surat.
-   - Permohonan langsung masuk ke daftar antrean **Modul 3 Operator Desa**.
+   - Warga memilih jenis surat yang dibutuhkan, memasukkan **NIK + Tanggal Lahir** (sistem memvalidasi kecocokannya dengan Master Penduduk agar tidak bisa diisi sembarangan oleh orang lain), memasukkan **Nomor HP/WA aktif**, mengisi keperluan surat, serta mengisi **Kolom Isian Khusus Dinamis** yang otomatis menyesuaikan jenis surat yang dipilih (misal: *Nama & Lokasi Usaha* untuk SKU, atau *Data Bayi* untuk Surat Kelahiran).
+   - Permohonan langsung masuk ke daftar **Modul 3 Operator Desa** lengkap dengan seluruh isian kolom khusus sehingga siap diverifikasi dan dicetak tanpa perlu diketik ulang.
    - Setelah Operator memverifikasi, mencetak, dan meminta tanda tangan Kepala Desa/Sekdes, Operator menekan tombol **"Kabari Warga via WA"** sehingga warga tinggal datang ke kantor desa untuk mengambil surat yang sudah jadi tanpa mengantre lama.
 
 ### E. Pusat Unduhan Dokumen Resmi (Download Center / PPID Desa):
@@ -395,6 +404,11 @@ Agar **Operator Desa** dapat mengelola konfigurasi sistem dan memperbarui tampil
       } catch (e) {
         mdText = document.getElementById('fallback-markdown').textContent;
       }
+
+      // Protect escaped percent (\% ) inside LaTeX math ($...$) from being unescaped by marked.js
+      mdText = mdText.replace(/\$([^$\n]+)\$/g, (match) =>
+        match.replace(/\\%/g, () => '\\\\%')
+      );
 
       // Render GitHub Alerts > [!NOTE]
       mdText = mdText.replace(
