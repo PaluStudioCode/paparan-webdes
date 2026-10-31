@@ -4,531 +4,77 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rancangan Modul Sistem Informasi & Website Operasional Desa</title>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- GitHub Markdown CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css">
   <!-- KaTeX for Math Rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <style>
-    :root {
-      --bg-body: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-sidebar: #0f172a;
-      --text-main: #0f172a;
-      --text-muted: #475569;
-      --text-sidebar: #cbd5e1;
-      --primary: #059669;
-      --primary-light: #ecfdf5;
-      --primary-border: #a7f3d0;
-      --accent: #0284c7;
-      --border: #e2e8f0;
-      --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
-      --radius: 12px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     html {
       scroll-behavior: smooth;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--text-main);
-      background-color: var(--bg-body);
+      background-color: #ffffff;
     }
 
     body {
-      display: flex;
-      min-height: 100vh;
-      line-height: 1.65;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
     }
 
-    /* Sidebar Navigation */
-    .sidebar {
-      width: 310px;
-      background: var(--bg-sidebar);
-      color: var(--text-sidebar);
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      overflow-y: auto;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      transition: transform 0.3s ease;
+    .markdown-body {
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 45px 32px 80px;
     }
 
-    .sidebar-header {
-      padding: 24px 20px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.02);
+    @media (max-width: 767px) {
+      .markdown-body {
+        padding: 20px 16px 48px;
+      }
     }
 
-    .badge-desa {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    .sidebar-title {
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-
-    .sidebar-subtitle {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 4px;
-    }
-
-    .search-box {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .search-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #fff;
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-family: inherit;
-      outline: none;
-    }
-
-    .search-input::placeholder {
-      color: #64748b;
-    }
-
-    .search-input:focus {
-      border-color: #10b981;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-list {
-      list-style: none;
-      padding: 14px 12px 24px;
-      flex: 1;
-    }
-
-    .nav-item a {
-      display: block;
-      padding: 9px 12px;
-      color: #cbd5e1;
-      text-decoration: none;
-      font-size: 13.5px;
-      font-weight: 500;
-      border-radius: 8px;
-      margin-bottom: 3px;
-      transition: all 0.15s ease;
-    }
-
-    .nav-item a:hover {
-      background: rgba(255, 255, 255, 0.07);
-      color: #ffffff;
-    }
-
-    .nav-item a.active {
-      background: var(--primary);
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .nav-item.sub-item a {
-      padding-left: 26px;
-      font-size: 12.5px;
-      color: #94a3b8;
-    }
-
-    .nav-item.sub-item a:hover {
-      color: #e2e8f0;
-    }
-
-    .sidebar-footer {
-      padding: 14px 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 12px;
-      color: #64748b;
-      text-align: center;
-    }
-
-    /* Main Content Area */
-    .main-wrapper {
-      flex: 1;
-      margin-left: 310px;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    /* Topbar */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 90;
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .menu-toggle {
-      display: none;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .topbar-info {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      color: var(--text-main);
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-
-    .btn:hover {
-      background: #f1f5f9;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-      border-color: var(--primary);
-    }
-
-    .btn-primary:hover {
-      background: #047857;
-    }
-
-    /* Document Container */
-    .content-container {
-      max-width: 980px;
-      width: 100%;
-      margin: 28px auto 64px;
-      padding: 0 28px;
-    }
-
-    .doc-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      padding: 44px 52px;
-    }
-
-    /* Markdown Typography */
-    .markdown-body h1 {
-      font-size: 28px;
-      font-weight: 800;
-      color: #0f172a;
-      line-height: 1.25;
-      margin-bottom: 16px;
-      padding-bottom: 18px;
-      border-bottom: 3px solid var(--primary);
-      letter-spacing: -0.02em;
-    }
-
-    .markdown-body h2 {
-      font-size: 21px;
-      font-weight: 800;
-      color: #0f172a;
-      margin-top: 42px;
-      margin-bottom: 16px;
+    /* GitHub-style Alert (> [!NOTE]) */
+    .markdown-alert {
       padding: 12px 16px;
-      background: linear-gradient(90deg, var(--primary-light) 0%, rgba(236, 253, 245, 0) 100%);
-      border-left: 4px solid var(--primary);
-      border-radius: 0 8px 8px 0;
-      scroll-margin-top: 80px;
-    }
-
-    .markdown-body h3 {
-      font-size: 16.5px;
-      font-weight: 700;
-      color: #1e293b;
-      margin-top: 26px;
-      margin-bottom: 10px;
-      scroll-margin-top: 80px;
-    }
-
-    .markdown-body h4 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #047857;
-      margin-top: 20px;
-      margin-bottom: 8px;
-    }
-
-    .markdown-body p {
-      margin-bottom: 14px;
-      color: #334155;
-      font-size: 15px;
-    }
-
-    .markdown-body ul, .markdown-body ol {
       margin-bottom: 16px;
-      padding-left: 24px;
-      color: #334155;
-      font-size: 15px;
+      color: inherit;
+      border-left: 0.25em solid #0969da;
+      background-color: #f6f8fa;
+      border-radius: 0 6px 6px 0;
     }
 
-    .markdown-body li {
-      margin-bottom: 6px;
-    }
-
-    .markdown-body li > ul, .markdown-body li > ol {
-      margin-top: 6px;
-      margin-bottom: 6px;
-    }
-
-    .markdown-body hr {
-      border: 0;
-      height: 1px;
-      background: var(--border);
-      margin: 36px 0;
-    }
-
-    .markdown-body a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .markdown-body a:hover {
-      text-decoration: underline;
-    }
-
-    .markdown-body code {
-      background: #f1f5f9;
-      color: #0f172a;
-      padding: 2px 6px;
-      border-radius: 5px;
-      font-size: 13.5px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      border: 1px solid #e2e8f0;
-    }
-
-    /* Tables */
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 18px 0 24px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-    }
-
-    .markdown-body table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      text-align: left;
-    }
-
-    .markdown-body th {
-      background: #f8fafc;
-      color: #0f172a;
-      font-weight: 700;
-      padding: 12px 14px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .markdown-body td {
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--border);
-      color: #334155;
-      vertical-align: top;
-    }
-
-    .markdown-body tr:last-child td {
-      border-bottom: none;
-    }
-
-    .markdown-body tr:hover td {
-      background-color: #f8fafc;
-    }
-
-    /* Callouts / GitHub Alerts */
-    .alert-box {
-      padding: 16px 20px;
-      border-radius: 10px;
-      margin: 20px 0;
-      border-left: 4px solid var(--accent);
-      background: #f0f9ff;
-      color: #0c4a6e;
-      font-size: 14.5px;
-    }
-
-    .alert-box .alert-title {
-      font-weight: 700;
+    .markdown-alert-title {
       display: flex;
+      font-weight: 600;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-      color: #0369a1;
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing: 0.05em;
+      line-height: 1;
+      color: #0969da;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
-    .alert-box p:last-child {
+    .markdown-alert p:last-child {
       margin-bottom: 0;
     }
 
-    /* Mermaid Diagrams */
+    /* Mermaid Diagram Container */
     .mermaid-wrapper {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px 16px;
-      margin: 22px 0;
+      margin: 20px 0;
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
       text-align: center;
       overflow-x: auto;
-    }
-
-    /* Fullscreen Presentation Mode */
-    body.presentation-mode .sidebar {
-      transform: translateX(-100%);
-    }
-
-    body.presentation-mode .main-wrapper {
-      margin-left: 0;
-    }
-
-    body.presentation-mode .content-container {
-      max-width: 1140px;
-    }
-
-    /* Responsive */
-    @media (max-width: 960px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .main-wrapper {
-        margin-left: 0;
-      }
-      .menu-toggle {
-        display: inline-flex;
-      }
-      .doc-card {
-        padding: 28px 22px;
-      }
-      .topbar {
-        padding: 12px 18px;
-      }
-      .content-container {
-        padding: 0 14px;
-      }
-    }
-
-    /* Print Styles */
-    @media print {
-      .sidebar, .topbar {
-        display: none !important;
-      }
-      .main-wrapper {
-        margin-left: 0 !important;
-      }
-      .content-container {
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      .doc-card {
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Navigation -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="badge-desa">🏛️ Dokumen Spesifikasi</div>
-      <div class="sidebar-title">Sistem Operasional & Website Desa</div>
-      <div class="sidebar-subtitle">2 Role • 4 Modul Internal • Portal Publik</div>
-    </div>
-    <div class="search-box">
-      <input type="text" id="searchInput" class="search-input" placeholder="Cari modul atau fitur..." />
-    </div>
-    <ul class="nav-list" id="navList">
-      <!-- Populated automatically from headings -->
-    </ul>
-    <div class="sidebar-footer">
-      Siap Dipaparkan • Standar Permendagri & UU PDP
-    </div>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="main-wrapper">
-    <header class="topbar">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <button class="menu-toggle" id="menuToggle">☰ Menu Modul</button>
-        <span class="topbar-info">📄 Sumber: <strong>modul-sistem-desa.md</strong></span>
-      </div>
-      <div class="topbar-actions">
-        <button class="btn" id="togglePresentation" title="Perlebar layar untuk proyektor">🖥️ Mode Paparan</button>
-        <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
-      </div>
-    </header>
-
-    <main class="content-container">
-      <article class="doc-card markdown-body" id="content">
-        <p>Memuat dokumen spesifikasi modul desa...</p>
-      </article>
-    </main>
-  </div>
+  <article class="markdown-body" id="content">
+    Memuat dokumen...
+  </article>
 
   <!-- Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -536,7 +82,7 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
-  <!-- Embedded Fallback Markdown (Used if opened directly via file:// offline) -->
+  <!-- Fallback Markdown jika dibuka langsung lewat file:// -->
   <script id="fallback-markdown" type="text/markdown">
 # RANCANGAN MODUL SISTEM INFORMASI & WEBSITE OPERASIONAL DESA
 
@@ -824,106 +370,66 @@ Agar **Operator Desa** dapat mengelola konfigurasi sistem dan memperbarui tampil
   <script>
     mermaid.initialize({
       startOnLoad: false,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#ecfdf5',
-        primaryTextColor: '#0f172a',
-        primaryBorderColor: '#059669',
-        lineColor: '#059669',
-        secondaryColor: '#f0f9ff',
-        tertiaryColor: '#f8fafc',
-        fontFamily: 'Plus Jakarta Sans, sans-serif'
-      }
+      theme: 'default'
     });
 
-    function slugify(text) {
+    function githubSlug(text) {
       return text
         .toString()
         .toLowerCase()
         .replace(/<[^>]*>/g, '')
         .replace(/[^\w\s-]/g, '')
         .trim()
-        .replace(/\s+/g, '-');
+        .replace(/\s/g, '-');
     }
 
-    async function loadMarkdown() {
+    async function renderDocument() {
       let mdText = '';
       try {
         const res = await fetch('./modul-sistem-desa.md?v=' + Date.now());
         if (res.ok) {
           mdText = await res.text();
         } else {
-          throw new Error('Fallback to embedded markdown');
+          throw new Error('Use fallback');
         }
       } catch (e) {
         mdText = document.getElementById('fallback-markdown').textContent;
       }
 
-      // Transform GitHub Alerts > [!NOTE]
+      // Render GitHub Alerts > [!NOTE]
       mdText = mdText.replace(
         /^>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*\n((?:>.*(?:\n|$))+)/gm,
         (match, type, body) => {
           const cleanBody = body.replace(/^>\s?/gm, '');
-          return `<div class="alert-box"><div class="alert-title">💡 CATATAN PENTING (${type})</div>\n\n${cleanBody}\n</div>\n`;
+          return `<div class="markdown-alert"><div class="markdown-alert-title">ℹ️ ${type}</div>\n\n${cleanBody}\n</div>\n`;
         }
       );
 
-      // Parse Markdown
-      const htmlContent = marked.parse(mdText);
       const contentEl = document.getElementById('content');
-      contentEl.innerHTML = htmlContent;
+      contentEl.innerHTML = marked.parse(mdText);
 
-      // Wrap tables for horizontal scrolling
-      contentEl.querySelectorAll('table').forEach((tbl) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'table-wrapper';
-        tbl.parentNode.insertBefore(wrapper, tbl);
-        wrapper.appendChild(tbl);
+      // Assign GitHub-compatible IDs to headings so Daftar Isi links work
+      contentEl.querySelectorAll('h1, h2, h3, h4').forEach((h) => {
+        h.id = githubSlug(h.textContent);
       });
 
-      // Add IDs to Headings & Build Sidebar Navigation
-      const navList = document.getElementById('navList');
-      navList.innerHTML = '';
-      const headings = contentEl.querySelectorAll('h2, h3');
-
-      headings.forEach((h) => {
-        const id = slugify(h.textContent);
-        h.id = id;
-
-        if (h.textContent.trim().toUpperCase() === 'DAFTAR ISI') return;
-
-        const li = document.createElement('li');
-        li.className = 'nav-item' + (h.tagName === 'H3' ? ' sub-item' : '');
-        const a = document.createElement('a');
-        a.href = '#' + id;
-        a.textContent = h.textContent;
-        a.addEventListener('click', () => {
-          document.getElementById('sidebar').classList.remove('open');
-        });
-        li.appendChild(a);
-        navList.appendChild(li);
-      });
-
-      // Convert Mermaid code blocks
+      // Render Mermaid blocks
       const mermaidBlocks = contentEl.querySelectorAll('pre code.language-mermaid');
       for (let i = 0; i < mermaidBlocks.length; i++) {
         const codeEl = mermaidBlocks[i];
         const preEl = codeEl.parentElement;
-        const graphDef = codeEl.textContent;
         const wrapper = document.createElement('div');
         wrapper.className = 'mermaid-wrapper';
         const mermaidDiv = document.createElement('div');
         mermaidDiv.className = 'mermaid';
-        mermaidDiv.textContent = graphDef;
+        mermaidDiv.textContent = codeEl.textContent;
         wrapper.appendChild(mermaidDiv);
         preEl.parentNode.replaceChild(wrapper, preEl);
       }
 
-      await mermaid.run({
-        querySelector: '.mermaid'
-      });
+      await mermaid.run({ querySelector: '.mermaid' });
 
-      // Render Math ($...$)
+      // Render LaTeX Math ($...$)
       if (window.renderMathInElement) {
         renderMathInElement(contentEl, {
           delimiters: [
@@ -933,51 +439,9 @@ Agar **Operator Desa** dapat mengelola konfigurasi sistem dan memperbarui tampil
           throwOnError: false
         });
       }
-
-      setupScrollSpy();
     }
 
-    function setupScrollSpy() {
-      const links = document.querySelectorAll('.nav-item a');
-      const sections = Array.from(links).map((link) => {
-        const id = link.getAttribute('href').slice(1);
-        return document.getElementById(id);
-      }).filter(Boolean);
-
-      window.addEventListener('scroll', () => {
-        let currentId = '';
-        const scrollY = window.scrollY + 120;
-        for (const section of sections) {
-          if (section.offsetTop <= scrollY) {
-            currentId = section.id;
-          }
-        }
-        links.forEach((link) => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
-        });
-      });
-    }
-
-    // Search Filter in Sidebar
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      document.querySelectorAll('#navList .nav-item').forEach((item) => {
-        const match = item.textContent.toLowerCase().includes(q);
-        item.style.display = match ? '' : 'none';
-      });
-    });
-
-    // Mobile Menu Toggle
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-    });
-
-    // Presentation Fullscreen Toggle
-    document.getElementById('togglePresentation').addEventListener('click', () => {
-      document.body.classList.toggle('presentation-mode');
-    });
-
-    loadMarkdown();
+    renderDocument();
   </script>
 </body>
 </html>
